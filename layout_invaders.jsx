@@ -43,7 +43,7 @@ LAYOUT_INVADERS.game = (function () {
     var patternStrings;
     var fonts = new Array();
     
-    var pathToScriptFolder = File($.fileName).path; // get the path to the script folder (doesnt care if run from estk or indesign
+    var pathToScriptFolder = File($.fileName).path; // get the path to the script folder (doesnt care if run from estk or indesign)
     
     var splashHeadline;
     var subHeadline;
@@ -702,8 +702,9 @@ LAYOUT_INVADERS.game = (function () {
             }
         });
     
+        //apply styling
         patternLeft.paragraphs.item(0).appliedFont = fonts[0];
-        patternLeft.paragraphs.item(0).fillColor = "Black"; // fill black
+        patternLeft.paragraphs.item(0).fillColor = "Black";
         patternLeft.paragraphs.item(0).fillTint = 60;
         patternLeft.paragraphs.item(0).pointSize = 12;
         
@@ -718,7 +719,8 @@ LAYOUT_INVADERS.game = (function () {
                 verticalJustification: VerticalJustification.CENTER_ALIGN
             }
         });
-        
+    
+        //apply styling
         splashHeadline.paragraphs.item(0).appliedFont = fonts[3];
         splashHeadline.paragraphs.item(0).fillColor = "hotBlue";
         splashHeadline.paragraphs.item(0).pointSize = 64;
@@ -728,15 +730,15 @@ LAYOUT_INVADERS.game = (function () {
         splashHeadline.paragraphs.item(0).underlineOffset = "6pt";
         splashHeadline.paragraphs.item(0).underlineWeight = "4.5pt";
         
-        app.findTextPreferences = NothingEnum.nothing; // now empty the find what field
-        app.changeTextPreferences = NothingEnum.nothing; // empties the change to field
+        app.findTextPreferences = NothingEnum.nothing; // empty the "find what" field
+        app.changeTextPreferences = NothingEnum.nothing; // empty the "change to" field
         
         app.findTextPreferences.findWhat = "layout"; // what do we want to find?
         app.changeTextPreferences.appliedFont = fonts[4];
         doc.changeText(); //execute changes
         
-        app.findTextPreferences = NothingEnum.nothing; // now empty the find what field
-        app.changeTextPreferences = NothingEnum.nothing; // empties the change to field
+        app.findTextPreferences = NothingEnum.nothing; // empty the "find what" field
+        app.changeTextPreferences = NothingEnum.nothing; // empty the "change to" field
         
         subHeadline = board.textFrames.add({contents: texts[1], geometricBounds: [65, 35, 71, 165],
             textFramePreferences:{
@@ -781,6 +783,7 @@ LAYOUT_INVADERS.game = (function () {
     }
 
     function clearSplashScreen() {
+        //unlock all, so we can remove them
         footer.locked = false;
         explanation.locked = false;
         callToAction.locked = false;
@@ -804,8 +807,8 @@ LAYOUT_INVADERS.game = (function () {
             enemyShots[n].remove(); //remove any leftover enemyShots
         }
         
-        if(succeeded == false && typeof enemyGroup != "undefined") { // player lost and any enemies left?
-            enemyGroup.remove();
+        if(succeeded == false && typeof enemyGroup != "undefined") { // player lost and any enemies left? 
+            enemyGroup.remove(); //TOFIX: sometimes enemygroup doesnt exist anymore but called anyways -> raises nasty error
         }
         
         if(LAYOUT_INVADERS.playerShot != -1){ //there is stil a bullet displayed? unlikely but well ...
@@ -813,7 +816,7 @@ LAYOUT_INVADERS.game = (function () {
             LAYOUT_INVADERS.playerShot = -1;
         }
     
-        for(var n=0;n<effects.length;n++){ // iterate over whole array
+        for(var n=0;n<effects.length;n++){
             var currentEffect = effects[n];
             var currentTextframe = currentEffect[0];
             currentTextframe.remove(); //remove effect from board
@@ -831,7 +834,7 @@ LAYOUT_INVADERS.game = (function () {
             msgContent = texts[9] + "\n Your Score: " + scoreNum;
         }
                  
-        //display message (& Scoreboard?)
+        //display message
         var headline = board.textFrames.add({contents: headlineContent, geometricBounds: [0, 0, 120, 200],
             textFramePreferences:{
                 verticalJustification: VerticalJustification.CENTER_ALIGN
@@ -870,7 +873,7 @@ LAYOUT_INVADERS.game = (function () {
                 verticalJustification: VerticalJustification.CENTER_ALIGN
             }
         });
-        // add styling
+        // apply styling
         highScoresFrame.paragraphs.item(0).appliedFont = fonts[6];
         highScoresFrame.paragraphs.item(0).fillColor = "hotBlue"; // fill hotBlue
         highScoresFrame.paragraphs.item(0).pointSize = 32;
@@ -879,7 +882,7 @@ LAYOUT_INVADERS.game = (function () {
         
         var highScoresContent = " ";
         
-        for(var i=0;i<highScores.length;i++){
+        for(var i=0;i<highScores.length;i++){ // compose content for highscore display
             highScoresContent += i+1 + ". ";
             highScoresContent += highScores[i][0];
             highScoresContent += " ";
@@ -894,14 +897,15 @@ LAYOUT_INVADERS.game = (function () {
     
     function getHighScores() {
         var highScoresStrings = getStrings("highscore.txt");
-        if(highScoresStrings.length != 0) { // highscores already exist?
+        
+        if(highScoresStrings.length > 0) { // highscores already exist?
             var re = /[0-9]+$/;
             for(var i=0;i<highScoresStrings.length;i++) {
-                highScores.push(new Array()); // SOMETHING IS WROOOOONG
+                highScores.push(new Array());
                 name = highScoresStrings[i].split(re);// get everything except the numbers at the end,
                 name = name[0].replace(/^\s\s*/, '');// trim surrounding whitespace
                 name = name.replace(/\s\s*$/, '');
-                score = highScoresStrings[i].match(re); 
+                score = highScoresStrings[i].match(re); // get the numbers at the end
                 highScores[i][0] = name;
                 highScores[i][1] = score;
             }
@@ -917,7 +921,7 @@ LAYOUT_INVADERS.game = (function () {
                     break;
                 }
             }
-        } else { // no highscores yet
+        } else { // no highscores yet ... doesn't work yet, getStrings returns something even if highscore.txt doesnt exist/is empty. need to investigate further ;) 
             var name = prompt("You scored " + scoreNum + " points\nPlease enter your name below:","",undefined);
             if(name != '') {// save entry only if name is entered
                 highScores.push(new Array());
@@ -934,7 +938,7 @@ LAYOUT_INVADERS.game = (function () {
         var write_file = File(filepath);
             
         if(!write_file.exists){
-            write_file = new File(filepath); // if the file does not exist create one
+            write_file = new File(filepath); // if the file doesn't exist create one
         }
 
         var out;// our output
@@ -956,7 +960,6 @@ LAYOUT_INVADERS.game = (function () {
                 }
             }
 
-            // always close files!
             write_file.close();  
         }
     }
@@ -996,7 +999,7 @@ LAYOUT_INVADERS.game = (function () {
     }
 
     function keyUp (k){
-        if(pauseGame == false) {
+        if(pauseGame == false) {// only if game is not paused ...
             var keyname = k.keyName;
             if(keyname == "Space") {
                 LAYOUT_INVADERS.spaceKey = false;
@@ -1013,7 +1016,7 @@ LAYOUT_INVADERS.game = (function () {
     }
     
     function gameLoop() { //gameLoop Code
-        if(pauseGame == false) {
+        if(pauseGame == false) {// only if game is not paused ...
             if(gameOver == false) {
                 player.move();
                 player.draw(board, fonts);
@@ -1072,13 +1075,13 @@ LAYOUT_INVADERS.player = function () {
         if(LAYOUT_INVADERS.leftKey == true) {
             pos.x -= 2.5;// move to the left, 2.5mm
             if(pos.x<=LAYOUT_INVADERS.gameBounds[1]+size.w/2){ // left boundary reached?
-                pos.x=LAYOUT_INVADERS.gameBounds[1]+size.w/2; // dont move further left
+                pos.x=LAYOUT_INVADERS.gameBounds[1]+size.w/2; // don't move further left
             }
         }
         if(LAYOUT_INVADERS.rightKey == true) {
             pos.x += 2.5;// move to the right, 2.5mm
             if(pos.x>=LAYOUT_INVADERS.gameBounds[3]-size.h/2){// right boundary reached?
-                pos.x=LAYOUT_INVADERS.gameBounds[3]-size.h/2;// dont move further right
+                pos.x=LAYOUT_INVADERS.gameBounds[3]-size.h/2;// don't move further right
             }
         }
     }
