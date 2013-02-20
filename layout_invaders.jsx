@@ -105,9 +105,6 @@ LAYOUT_INVADERS.game = (function () {
                 w.close();// close panel, onClose event is fired
             }
         };
-        
-        var stopButton = w.add ("button", undefined, "close game");
-        stopButton.onClick = function () {w.close();}; // close panel, onClose event is fired
 
         w.show (); // make panel visible
         
