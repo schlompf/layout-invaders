@@ -99,7 +99,10 @@ LAYOUT_INVADERS.game = (function () {
             if(started == false) {
                 clearSplashScreen(); // remove SplashScreen stuff
                 bindEvents();
-                started = true; // we dont want anybody clicking twice the start button ...
+                startButton.text = "close game"; // ... BOOOM, it's a stop button
+                started = true; // next click will close panel & game
+            } else {
+                w.close();// close panel, onClose event is fired
             }
         };
         
