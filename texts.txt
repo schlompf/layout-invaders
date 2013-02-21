@@ -10,13 +10,13 @@ Philipp Geuder 2012, FH Potsdam
 2. Press start game
 </*---*/>
 Entstanden während der Projektwochen WS 2012/13 FH Potsdam
-im Kurs "Typografie und Automation"
+im Kurs Typografie und Automation von Fabian Morón Zirfas
 </*---*/>
 i—A—i
 </*---*/>
 |  Score: 00
 </*---*/>
-Congrats you prevent Comic Sans from 
+Congrats, you prevented Comic Sans from 
 invading your layout!
 </*---*/>
 Comic Sans invaded your layout.
